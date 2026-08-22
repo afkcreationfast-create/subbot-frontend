@@ -3,129 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AFK SubBot - Connexion</title>
+  <title>AFK SubBot</title>
   <style>
-    body {
-      background-color: #0f111a;
-      color: #fff;
-      font-family: sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-    }
-    .card {
-      background: #16192b;
-      padding: 30px;
-      border-radius: 16px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: 1px solid #333;
-      background: #0f111a;
-      color: #fff;
-      box-sizing: border-box;
-      text-align: center;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 8px;
-      border: none;
-      border-radius: 8px;
-      background: #8a2be2;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover { background: #7a1bd2; }
+    body { background: #0f111a; color: #fff; font-family: system-ui, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+    .card { background: #16192b; padding: 25px; border-radius: 16px; width: 90%; max-width: 380px; text-align: center; border: 1px solid #2a2e45; }
+    input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; border: 1px solid #333; background: #0f111a; color: #fff; text-align: center; font-size: 1rem; box-sizing: border-box; }
+    button { width: 100%; padding: 14px; margin-top: 8px; border: none; border-radius: 10px; background: #8a2be2; color: #fff; font-weight: bold; font-size: 0.95rem; cursor: pointer; }
+    button:active { opacity: 0.8; }
     .btn-qr { background: #25d366; }
-    .btn-qr:hover { background: #1da851; }
-    .output-box {
-      margin-top: 20px;
-      padding: 15px;
-      background: #090a10;
-      border-radius: 8px;
-      border: 1px dashed #8a2be2;
-      min-height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    #qrImage { max-width: 200px; display: none; margin: 10px auto; }
-    #codeDisplay { font-size: 1.5rem; font-weight: bold; color: #00ffff; }
+    .box { margin-top: 20px; padding: 15px; background: #090a10; border-radius: 10px; border: 1px dashed #8a2be2; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+    #code { font-size: 1.6rem; font-weight: bold; color: #00ffff; letter-spacing: 2px; }
+    #qr { max-width: 180px; display: none; margin: 0 auto; border-radius: 8px; }
   </style>
 </head>
 <body>
 
   <div class="card">
     <h2>AFK SubBot</h2>
-    <p>Choisissez votre mode de connexion :</p>
+    <p style="font-size: 0.85rem; color: #aaa;">Entrez votre numéro avec l'indicatif (ex: 50931234567)</p>
 
-    <input type="text" id="phone" placeholder="Ex: 50931234567">
+    <input type="tel" id="phone" placeholder="Numéro WhatsApp">
 
-    <button onclick="getCode()">Obtenir le Code d'Appairage</button>
-    <button class="btn-qr" onclick="getQR()">Générer un QR Code</button>
+    <button onclick="req('pair')">Obtenir le Code d'Appairage</button>
+    <button class="btn-qr" onclick="req('qr')">Générer un QR Code</button>
 
-    <div class="output-box">
-      <div id="codeDisplay">Attente d'action...</div>
-      <img id="qrImage" alt="QR Code">
+    <div class="box">
+      <div id="code">Prêt...</div>
+      <img id="qr" alt="QR Code">
     </div>
   </div>
 
   <script>
-    const BACKEND_URL = "https://subbot-backend.onrender.com";
+    const API = "https://subbot-backend.onrender.com";
 
-    async function getCode() {
+    async function req(type) {
       const num = document.getElementById('phone').value;
-      const display = document.getElementById('codeDisplay');
-      const img = document.getElementById('qrImage');
+      const codeEl = document.getElementById('code');
+      const qrEl = document.getElementById('qr');
 
-      if (!num) return alert('Entrez votre numéro');
+      if (!num) return alert('Veuillez entrer votre numéro');
 
-      img.style.display = 'none';
-      display.style.display = 'block';
-      display.innerText = "Chargement...";
-
-      try {
-        const res = await fetch(`${BACKEND_URL}/pair?number=${num}`);
-        const data = await res.json();
-        display.innerText = data.code || data.error;
-      } catch (e) {
-        display.innerText = "Erreur de connexion";
-      }
-    }
-
-    async function getQR() {
-      const num = document.getElementById('phone').value || '12345';
-      const display = document.getElementById('codeDisplay');
-      const img = document.getElementById('qrImage');
-
-      display.style.display = 'block';
-      display.innerText = "Génération du QR Code...";
-      img.style.display = 'none';
+      qrEl.style.display = 'none';
+      codeEl.style.display = 'block';
+      codeEl.innerText = "Génération...";
 
       try {
-        const res = await fetch(`${BACKEND_URL}/qr?number=${num}`);
+        const res = await fetch(`${API}/${type}?number=${num}`);
         const data = await res.json();
 
-        if (data.qr) {
-          display.style.display = 'none';
-          img.src = data.qr;
-          img.style.display = 'block';
+        if (type === 'pair') {
+          codeEl.innerText = data.code || data.error || "Erreur";
+        } else if (data.qr) {
+          codeEl.style.display = 'none';
+          qrEl.src = data.qr;
+          qrEl.style.display = 'block';
         } else {
-          display.innerText = data.error || "Erreur QR";
+          codeEl.innerText = data.error || "Erreur QR";
         }
       } catch (e) {
-        display.innerText = "Erreur de connexion";
+        codeEl.innerText = "Erreur de connexion";
       }
     }
   </script>
