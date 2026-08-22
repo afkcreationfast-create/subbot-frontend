@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AFK SubBot - Control Panel</title>
+  <title>AFK SubBot - Pairing Code</title>
   <style>
     :root {
       --bg-color: #0b0f19;
-      --card-bg: rgba(22, 27, 34, 0.8);
+      --card-bg: rgba(22, 27, 34, 0.85);
       --primary: #9d4edd;
       --accent: #00ffff;
       --text: #ffffff;
@@ -35,7 +35,7 @@
 
     .container {
       width: 100%;
-      max-width: 800px;
+      max-width: 600px;
       background: var(--card-bg);
       border: 1px solid rgba(157, 78, 221, 0.3);
       border-radius: 16px;
@@ -46,57 +46,26 @@
 
     header {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding-bottom: 20px;
+      padding-bottom: 15px;
     }
 
     h1 {
-      font-size: 2.2rem;
+      font-size: 2rem;
       background: linear-gradient(90deg, var(--primary), var(--accent));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     p.subtitle {
       color: var(--text-dim);
-      font-size: 0.95rem;
-    }
-
-    .status-card {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 15px 20px;
-      border-radius: 10px;
-      margin-bottom: 25px;
-      border: 1px solid rgba(0, 255, 255, 0.2);
-    }
-
-    .status-indicator {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: bold;
-    }
-
-    .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background-color: var(--danger);
-      box-shadow: 0 0 8px var(--danger);
-    }
-
-    .dot.online {
-      background-color: var(--success);
-      box-shadow: 0 0 8px var(--success);
+      font-size: 0.9rem;
     }
 
     .section {
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
     label {
@@ -108,12 +77,12 @@
 
     input[type="text"] {
       width: 100%;
-      padding: 12px 15px;
+      padding: 14px 15px;
       border-radius: 8px;
       border: 1px solid rgba(157, 78, 221, 0.4);
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(15, 23, 42, 0.9);
       color: var(--text);
-      font-size: 1rem;
+      font-size: 1.1rem;
       outline: none;
       transition: border 0.3s ease;
     }
@@ -123,62 +92,65 @@
       box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
     }
 
-    .btn-group {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
     button {
-      flex: 1;
-      min-width: 150px;
-      padding: 12px 20px;
+      width: 100%;
+      padding: 14px;
       border: none;
       border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 0.95rem;
-    }
-
-    .btn-primary {
       background: linear-gradient(135deg, var(--primary), #7b2cbf);
       color: var(--text);
+      font-size: 1rem;
+      transition: all 0.3s ease;
     }
 
-    .btn-primary:hover {
+    button:hover {
       opacity: 0.9;
       box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
     }
 
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid var(--accent);
-      color: var(--accent);
+    .code-box {
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px dashed var(--accent);
+      border-radius: 10px;
+      text-align: center;
+      display: none;
     }
 
-    .btn-secondary:hover {
-      background: rgba(0, 255, 255, 0.1);
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    .code-box h3 {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .pairing-code {
+      font-family: monospace;
+      font-size: 2.2rem;
+      letter-spacing: 5px;
+      color: var(--accent);
+      font-weight: bold;
     }
 
     .console-log {
       background: #050811;
       border-radius: 8px;
-      padding: 15px;
-      height: 180px;
+      padding: 12px;
+      height: 120px;
       overflow-y: auto;
       font-family: 'Courier New', Courier, monospace;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--accent);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-top: 15px;
     }
 
     footer {
       text-align: center;
-      margin-top: 25px;
+      margin-top: 20px;
       color: var(--text-dim);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
   </style>
 </head>
@@ -186,33 +158,24 @@
 
   <div class="container">
     <header>
-      <h1>AFK SubBot Panel</h1>
-      <p class="subtitle">Gestion et contrôle en direct de votre bot WhatsApp</p>
+      <h1>AFK SubBot - Pairing</h1>
+      <p class="subtitle">Entrez votre numéro pour connecter WhatsApp</p>
     </header>
 
-    <div class="status-card">
-      <span>État du Serveur (Render) :</span>
-      <div class="status-indicator">
-        <div class="dot" id="statusDot"></div>
-        <span id="statusText">Vérification...</span>
-      </div>
-    </div>
-
     <div class="section">
-      <label for="sessionId">Session ID :</label>
-      <input type="text" id="sessionId" placeholder="Entrez votre SESSION_ID ici...">
+      <label for="phoneNumber">Numéro WhatsApp (avec indicatif, ex: 50931234567) :</label>
+      <input type="text" id="phoneNumber" placeholder="Exemple: 50931234567">
     </div>
 
-    <div class="section btn-group">
-      <button class="btn-primary" onclick="saveConfig()">Enregistrer & Démarrer</button>
-      <button class="btn-secondary" onclick="checkStatus()">Actualiser Statut</button>
+    <button onclick="getPairingCode()">Obtenir le Code d'Appairage</button>
+
+    <div class="code-box" id="codeBox">
+      <h3>VOTRE CODE D'APPAIRAGE :</h3>
+      <div class="pairing-code" id="pairingCode">--------</div>
     </div>
 
-    <div class="section">
-      <label>Logs du système :</label>
-      <div class="console-log" id="consoleLog">
-        > Patienter... Connexion au panneau d'administration.<br>
-      </div>
+    <div class="console-log" id="consoleLog">
+      > En attente du numéro de téléphone...<br>
     </div>
 
     <footer>
@@ -221,7 +184,6 @@
   </div>
 
   <script>
-    // Remplacez par votre URL Render exacte une fois le backend créé
     const BACKEND_URL = "https://subbot-backend.onrender.com";
 
     function logMessage(msg) {
@@ -231,55 +193,33 @@
       consoleLog.scrollTop = consoleLog.scrollHeight;
     }
 
-    async function checkStatus() {
-      const dot = document.getElementById('statusDot');
-      const text = document.getElementById('statusText');
-      
-      try {
-        logMessage("Vérification de la connexion au serveur backend...");
-        const res = await fetch(`${BACKEND_URL}/`);
-        if (res.ok) {
-          dot.classList.add('online');
-          text.innerText = "En ligne";
-          logMessage("Serveur Render en ligne et opérationnel.");
-        } else {
-          throw new Error("Réponse serveur non valide");
-        }
-      } catch (err) {
-        dot.classList.remove('online');
-        text.innerText = "Hors ligne / En veille";
-        logMessage("Impossible de joindre le backend Render (Le service est peut-être en veille).");
-      }
-    }
+    async function getPairingCode() {
+      const phoneInput = document.getElementById('phoneNumber').value.replace(/[^0-9]/g, '');
+      const codeBox = document.getElementById('codeBox');
+      const pairingCodeDisplay = document.getElementById('pairingCode');
 
-    async function saveConfig() {
-      const sessionId = document.getElementById('sessionId').value.trim();
-      if (!sessionId) {
-        alert("Veuillez saisir un SESSION_ID valide.");
+      if (!phoneInput || phoneInput.length < 8) {
+        alert("Veuillez saisir un numéro de téléphone valide avec l'indicatif du pays.");
         return;
       }
 
-      logMessage("Envoi de la configuration au backend...");
+      logMessage(`Demande de code pour le numéro : +${phoneInput}...`);
       
       try {
-        const res = await fetch(`${BACKEND_URL}/config`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ SESSION_ID: sessionId })
-        });
+        const res = await fetch(`${BACKEND_URL}/pair?number=${phoneInput}`);
+        const data = await res.json();
 
-        if (res.ok) {
-          logMessage("Configuration mise à jour avec succès !");
+        if (data.code) {
+          pairingCodeDisplay.innerText = data.code;
+          codeBox.style.display = 'block';
+          logMessage("Code généré avec succès ! Saisissez-le dans WhatsApp.");
         } else {
-          logMessage("Erreur lors de la mise à jour de la configuration.");
+          logMessage("Erreur : Impossible de générer le code d'appairage.");
         }
       } catch (err) {
-        logMessage("Erreur réseau : " + err.message);
+        logMessage("Erreur réseau : Vérifiez que le serveur Render est en ligne.");
       }
     }
-
-    // Vérifier le statut au chargement de la page
-    window.onload = checkStatus;
   </script>
 </body>
 </html>
