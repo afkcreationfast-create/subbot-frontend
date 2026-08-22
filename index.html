@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AFK SubBot - Pairing Code</title>
+  <title>AFK SubBot - Code d'Appairage</title>
   <style>
     :root {
       --bg-color: #0b0f19;
@@ -35,7 +35,7 @@
 
     .container {
       width: 100%;
-      max-width: 600px;
+      max-width: 500px;
       background: var(--card-bg);
       border: 1px solid rgba(157, 78, 221, 0.3);
       border-radius: 16px;
@@ -122,14 +122,14 @@
 
     .code-box h3 {
       color: var(--text-dim);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       margin-bottom: 8px;
     }
 
     .pairing-code {
       font-family: monospace;
       font-size: 2.2rem;
-      letter-spacing: 5px;
+      letter-spacing: 6px;
       color: var(--accent);
       font-weight: bold;
     }
@@ -138,12 +138,12 @@
       background: #050811;
       border-radius: 8px;
       padding: 12px;
-      height: 120px;
+      height: 100px;
       overflow-y: auto;
       font-family: 'Courier New', Courier, monospace;
       font-size: 0.8rem;
       color: var(--accent);
-      margin-top: 15px;
+      margin-top: 20px;
     }
 
     footer {
@@ -158,24 +158,24 @@
 
   <div class="container">
     <header>
-      <h1>AFK SubBot - Pairing</h1>
-      <p class="subtitle">Entrez votre numéro pour connecter WhatsApp</p>
+      <h1>AFK SubBot</h1>
+      <p class="subtitle">Connexion WhatsApp par Code d'Appairage</p>
     </header>
 
     <div class="section">
-      <label for="phoneNumber">Numéro WhatsApp (avec indicatif, ex: 50931234567) :</label>
+      <label for="phoneNumber">Numéro WhatsApp (avec indicatif pays) :</label>
       <input type="text" id="phoneNumber" placeholder="Exemple: 50931234567">
     </div>
 
     <button onclick="getPairingCode()">Obtenir le Code d'Appairage</button>
 
     <div class="code-box" id="codeBox">
-      <h3>VOTRE CODE D'APPAIRAGE :</h3>
+      <h3>VOTRE CODE DE CONNEXION :</h3>
       <div class="pairing-code" id="pairingCode">--------</div>
     </div>
 
     <div class="console-log" id="consoleLog">
-      > En attente du numéro de téléphone...<br>
+      > Entrez votre numéro puis cliquez sur le bouton.<br>
     </div>
 
     <footer>
@@ -194,16 +194,17 @@
     }
 
     async function getPairingCode() {
-      const phoneInput = document.getElementById('phoneNumber').value.replace(/[^0-9]/g, '');
+      const rawNumber = document.getElementById('phoneNumber').value;
+      const phoneInput = rawNumber.replace(/[^0-9]/g, '');
       const codeBox = document.getElementById('codeBox');
       const pairingCodeDisplay = document.getElementById('pairingCode');
 
       if (!phoneInput || phoneInput.length < 8) {
-        alert("Veuillez saisir un numéro de téléphone valide avec l'indicatif du pays.");
+        alert("Veuillez saisir un numéro de téléphone valide avec l'indicatif (ex: 50931234567).");
         return;
       }
 
-      logMessage(`Demande de code pour le numéro : +${phoneInput}...`);
+      logMessage(`Demande de code pour : +${phoneInput}...`);
       
       try {
         const res = await fetch(`${BACKEND_URL}/pair?number=${phoneInput}`);
@@ -212,12 +213,12 @@
         if (data.code) {
           pairingCodeDisplay.innerText = data.code;
           codeBox.style.display = 'block';
-          logMessage("Code généré avec succès ! Saisissez-le dans WhatsApp.");
+          logMessage("Code généré ! Allez sur WhatsApp > Appareils connectés > Associer avec un code.");
         } else {
-          logMessage("Erreur : Impossible de générer le code d'appairage.");
+          logMessage("Erreur : Impossible d'obtenir le code.");
         }
       } catch (err) {
-        logMessage("Erreur réseau : Vérifiez que le serveur Render est en ligne.");
+        logMessage("Erreur réseau : Le serveur Render n'est pas encore prêt.");
       }
     }
   </script>
